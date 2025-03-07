@@ -272,7 +272,7 @@ def main():
         show_assessment_page()
 
 def show_assessment_page():
-    st.markdown("<h1>� Career Path Predictor</h1>", unsafe_allow_html=True)
+    st.markdown("<h1>🧭 Career Path Predictor</h1>", unsafe_allow_html=True)
     
     # Introduction
     col1, col2, col3 = st.columns([1,2,1])
