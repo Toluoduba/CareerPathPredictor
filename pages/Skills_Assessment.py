@@ -22,44 +22,49 @@ st.markdown("""
         padding: 10px;
     }
     
-    /* Form styling */
+    /* Form styling - works in both dark and light modes */
     .stForm {
-        background-color: rgba(255, 255, 255, 0.9);
+        background-color: rgba(100, 100, 100, 0.1); /* Subtle background that works in both themes */
         padding: 15px;
         border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+        border: 1px solid rgba(150, 150, 150, 0.2); /* Subtle border for both themes */
     }
     
     /* Question group styling */
     .question-group {
         padding: 15px;
         margin: 10px 0;
-        border-bottom: 2px solid #ffffff;
+        border-bottom: 2px solid rgba(150, 150, 150, 0.3); /* Works in both themes */
+        background-color: rgba(100, 100, 100, 0.05); /* Very subtle background */
     }
     
-    /* Remove the line from the last question group */
+    /* Add a slight top border as well except for the first question */
+    .question-group:not(:first-child) {
+        border-top: 1px solid rgba(150, 150, 150, 0.2);
+    }
+    
+    /* Make the last question's bottom border visible */
     .question-group:last-child {
-        border-bottom: none;
+        border-bottom: 2px solid rgba(150, 150, 150, 0.3);
     }
     
-    /* Text colors and spacing */
+    /* Text colors and spacing - use !important sparingly */
     h1 {
-        color: #1f77b4 !important;
         text-align: center;
         padding-bottom: 15px;
         font-size: calc(1.5rem + 1vw) !important;
     }
     
     h2 {
-        color: #2c3e50 !important;
         margin-bottom: 15px;
         font-size: calc(1.2rem + 0.5vw) !important;
     }
     
     h5 {
-        color: #2c3e50 !important;
         font-size: calc(0.9rem + 0.3vw) !important;
         margin-bottom: 5px !important;
+        font-weight: 600;
     }
     
     /* Radio button styling */
@@ -68,30 +73,72 @@ st.markdown("""
     }
     
     .stRadio > label {
-        color: #2c3e50 !important;
-        background-color: #f0f2f6;
         padding: 8px;
         border-radius: 5px;
         font-size: calc(0.8rem + 0.2vw) !important;
+        font-weight: 500;
+    }
+    
+    /* Radio button styles that work in both themes */
+    .stRadio > div {
+        background-color: rgba(100, 100, 100, 0.05);
+        border-radius: 5px;
+        padding: 3px;
     }
     
     /* Mobile adjustments */
     @media (max-width: 768px) {
         .question-group {
-            padding: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(150, 150, 150, 0.3);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        /* Make text bolder on mobile */
+        h5 {
+            font-weight: 600;
+        }
+        
+        /* Make form more visible */
+        .stForm {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border: 1px solid rgba(150, 150, 150, 0.3);
         }
     }
     
     /* Error message styling */
     .error-message {
-        color: #d9534f;
-        background-color: #f9e2e2;
+        color: #ff5252;
+        background-color: rgba(255, 0, 0, 0.1);
         padding: 10px;
         border-radius: 5px;
         margin-top: 10px;
         margin-bottom: 20px;
         text-align: center;
         font-weight: bold;
+        border: 1px solid rgba(255, 0, 0, 0.2);
+    }
+    
+    /* Results page styling for boxes that work in both themes */
+    .result-box {
+        background-color: rgba(100, 100, 100, 0.05);
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        border: 1px solid rgba(150, 150, 150, 0.2);
+    }
+    
+    /* Highlight box for the main result */
+    .highlight-box {
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        margin-bottom: 30px;
+        border: 1px solid rgba(100, 150, 200, 0.3);
+        background-color: rgba(100, 150, 200, 0.1);
     }
     </style>
     """, unsafe_allow_html=True)
@@ -278,7 +325,7 @@ def show_assessment_page():
     col1, col2, col3 = st.columns([1,2,1])
     with col2:  
         st.markdown("""
-        <div style='text-align: center; padding: 20px; background-color: #f8f9fa; border-radius: 10px; margin-bottom: 30px'>
+        <div style='text-align: center; padding: 20px; border-radius: 10px; margin-bottom: 30px; background-color: rgba(100, 100, 100, 0.05); border: 1px solid rgba(150, 150, 150, 0.2);'>
             <h2>Welcome to Your Career Assessment!</h2>
             <p>This tool will help predict your ideal role based on your skills and interests.
             Please rate your proficiency in various technical areas below.</p>
@@ -344,7 +391,7 @@ def show_assessment_page():
     # Footer
     st.markdown("""
         <div style='text-align: center; padding: 20px; margin-top: 50px; color: #666;'>
-            
+            <p></p>
         </div>
     """, unsafe_allow_html=True)
 
@@ -353,9 +400,9 @@ def show_results_page():
     
     # Display prediction with some animation
     st.markdown(f"""
-        <div style='background-color: #e3f2fd; padding: 30px; border-radius: 10px; text-align: center; margin-bottom: 30px;'>
+        <div class="highlight-box">
             <h2>Your Predicted Career Path</h2>
-            <h3 style='color: #1976d2; font-size: 2.5rem; margin: 20px 0;'>🎉 {st.session_state.predicted_role}</h3>
+            <h3 style='font-size: 2.5rem; margin: 20px 0;'>🎉 {st.session_state.predicted_role}</h3>
         </div>
     """, unsafe_allow_html=True)
     
@@ -365,7 +412,7 @@ def show_results_page():
     """, unsafe_allow_html=True)
     
     st.markdown(f"""
-        <div style='background-color: white; padding: 20px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);'>
+        <div class="result-box">
             <p style='font-size: 1.1rem;'>{job_descriptions.get(st.session_state.predicted_role, "This role involves a unique combination of technical skills.")}</p>
         </div>
     """, unsafe_allow_html=True)
@@ -376,7 +423,7 @@ def show_results_page():
     """, unsafe_allow_html=True)
     
     st.markdown(f"""
-        <div style='background-color: white; padding: 20px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);'>
+        <div class="result-box">
             <p style='font-size: 1.1rem; white-space: pre-line;'>{st.session_state.explanation}</p>
         </div>
     """, unsafe_allow_html=True)
@@ -406,7 +453,7 @@ def show_results_page():
     }
     
     st.markdown(f"""
-        <div style='background-color: white; padding: 20px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);'>
+        <div class="result-box">
             <p style='font-size: 1.1rem;'>{career_outlooks.get(st.session_state.predicted_role, "This field offers strong growth opportunities for professionals with your skill set.")}</p>
         </div>
     """, unsafe_allow_html=True)
@@ -429,7 +476,7 @@ def show_results_page():
     """, unsafe_allow_html=True)
     
     st.markdown(f"""
-        <div style='background-color: white; padding: 20px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);'>
+        <div class="result-box">
             <ul style='font-size: 1.1rem;'>
                 <li><strong>Research the role:</strong> Learn more about what {st.session_state.predicted_role}s do day-to-day</li>
                 <li><strong>Connect with professionals:</strong> Find people working in this field on LinkedIn or professional communities</li>
