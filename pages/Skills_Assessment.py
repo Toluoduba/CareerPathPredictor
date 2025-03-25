@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 if st.button("← Back to Home", key="home_button"):
-    st.switch_page("homepage.py")
+    st.switch_page("Homepage.py")
     
 # Custom CSS
 st.markdown("""
@@ -505,7 +505,7 @@ def show_results_page():
             st.session_state.error_message = ""
             # Clear previous responses 
             reset_form()
-            st.switch_page("homepage.py")
+            st.switch_page("Homepage.py")
     
     with col3:
         if st.button("📋 Take New Assessment", use_container_width=True):
